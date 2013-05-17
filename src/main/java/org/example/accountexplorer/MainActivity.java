@@ -5,6 +5,7 @@ import android.accounts.AccountManager;
 import android.accounts.AccountManagerFuture;
 import android.app.ListActivity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.lang.Exception;
@@ -32,11 +34,17 @@ public class MainActivity extends ListActivity {
     public void displayAccounts() {
         AccountManager manager = AccountManager.get(this);
         Account[] accounts = manager.getAccounts();
-        getListView().setAdapter(new AccountsAdapter(this,
+        setListAdapter(new AccountsAdapter(this,
             android.R.layout.simple_list_item_2,
             android.R.id.text1,
             android.R.id.text2,
             accounts));
+    }
+
+    @Override
+    public void onListItemClick(ListView listView, View view, int position, long id) {
+        startActivity(new Intent(this, AccountActivity.class).
+            putExtra("account", (Account) listView.getItemAtPosition(position)));
     }
 
     @Override
